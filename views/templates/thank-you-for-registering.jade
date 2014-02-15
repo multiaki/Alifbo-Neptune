@@ -1,0 +1,19 @@
+extend layout
+block content
+	.ribbon-wrapper.clearfix
+		p
+			| Thank you
+	p.call-action-txt
+		| Thank you for registering.
+	div.input-field-wrapper
+		.form-label
+			| Fullname
+			p.user-details #{username}
+	div.input-field-wrapper
+		.form-label
+			| Email
+			p.user-details #{useremail}
+	
+	.button-wrapper.clearfix
+			button.register-btn.btn
+				| Continue

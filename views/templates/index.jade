@@ -1,0 +1,27 @@
+extend layout
+block content
+	.ribbon-wrapper.clearfix
+		p
+			| Login
+	p.call-action-txt
+		| Please login to start learning
+	form(action='#', method='post')
+		div.input-field-wrapper
+			label.form-label
+				| Email
+				input.input-field(type='text', placeholder='Your email')
+		div.input-field-wrapper
+			label.form-label
+				| Password
+				input.input-field(type='password', placeholder='Choose your password')
+
+		.button-wrapper.clearfix
+			button.facebook-btn.btn
+				| Facebook Login
+			button.register-btn.btn
+				| Login
+	.logged-in-wrapper.clearfix
+		a.logged-in-link(href='/register')
+			| Not a member yet?
+			span
+				| Register

@@ -1,0 +1,28 @@
+extend layout
+block content
+	.ribbon-wrapper.clearfix
+		p
+			| Register
+	p.call-action-txt
+		| Please register to start learning
+	form#register(action='/register', method='post')
+		div.input-field-wrapper
+			label(for='email').form-label
+				| Email
+				input.input-field(type='text', placeholder='Your email', name='email', id='email')
+		div.input-field-wrapper
+			label(for='password').form-label
+				| Password
+				input.input-field(type='password', placeholder='Choose your password', name='password', id='password')
+
+	.button-wrapper.clearfix
+		button.facebook-btn.btn
+			| Facebook Connect
+		button.register-btn.btn
+			| Register
+	.logged-in-wrapper.clearfix
+		a.logged-in-link(href='/login')
+			| Already registered?
+			span
+				| Login
+				

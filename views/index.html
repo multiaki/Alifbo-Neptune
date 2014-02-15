@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--**************************************************************************-->
+    <!--               _____   _____      _______                       _____-->
+    <!--    |\     |  |       |     |        |     |      |  |\     |  |-->
+    <!--    | \    |  |       |     |        |     |      |  | \    |  |-->
+    <!--    |  \   |  |____   |_____|        |     |      |  |  \   |  |____-->
+    <!--    |   \  |  |       |        ---   |     |      |  |   \  |  |-->
+    <!--    |    \ |  |       |              |     |      |  |    \ |  |-->
+    <!--    |     \|  |_____  |              |      \____/   |     \|  |_____-->
+    <!---->
+    <!--     NODE  -  EMBER - PARSE  in perfect TUNE-->
+    <!--**************************************************************************-->
+    <title></title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/neptune.css">
+  </head>
+  <body>
+    <script type="text/x-handlebars" data-template-name="application">
+      {{view Neptune.NavigationView}}
+      {{outlet}}
+    </script>
+    <!-- ember templates-->
+    <script type="text/x-handlebars" data-template-name="navigation">
+      <nav class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <ul class="nav">
+              <li><a {{action doHome }} href="#">Home</a></li>
+              <li><a {{action doMyProfile }} {{bindAttr class="view.hideLogout"}} href="#">My Profile</a></li>
+              <li><a {{action doSmsMessaging }} {{bindAttr class="view.hideLogout"}} href="#" class="loggedIn">SMSing</a></li>
+              <li><a {{action doEmailMessaging }} {{bindAttr class="view.hideLogout"}} href="#" class="loggedIn">Emailing</a></li>
+              <li><a {{action logout target="parentView"}} href="#" {{bindAttr class="view.hideLogout"}}>Sign Out</a></li>
+              <li><a {{action showRegister target="parentView"}} {{bindAttr class="view.hideLogin"}} href="#">Register</a></li>
+              <li><a {{action showSignIn target="parentView"}} {{bindAttr class="view.hideLogin"}} href="#">Sign In</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div>
+        <div id="forgotPassword" data-backdrop="static" aria-hidden="true" class="modal fade">
+          <div class="modal-header"><button class="close" {{action "cancelForgotPassword" target="parentView"}}>&times;</button>
+            <h3>Forgot Password</h3>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="forgot-password-group control-group">
+                <label class="control-label"></label>
+                <div class="controls"><span class="help-inline">{{view.forgotPassword.error}}</span></div>
+                <label class="control-label">Email</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span></div>{{view Ember.TextField valueBinding="view.forgotPassword.email" placeholder="Enter your email address"}}
+                </div>
+              </div>
+              <div class="forgot-password-group control-group">
+                <div class="controls">
+                  <div class="row">
+                    <div class="span1"><a href="#" {{action "showRegister" target="parentView"}}>Register</a></div>
+                    <div class="span2"><a href="#" {{action "showSignIn" target="parentView"}}>Sign In</a></div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" {{action "cancelForgotPassword" target="parentView"}}>Cancel</button>
+            <button class="btn btn-primary" {{action "requestForgotPassword" target="parentView"}}>Send</button>
+          </div>
+        </div>
+        <div id="signIn" data-backdrop="static" aria-hidden="true" class="modal fade">
+          <div class="modal-header"><button class="close" {{action "cancelSignIn" target="parentView"}}>&times;</button>
+            <h3>Sign In</h3>
+          </div>
+          <div class="modal-body">
+            <img class="fb_icon" src="images/fb.png" {{action "fbLogin" target="parentView"}}/>
+            <img class="tw_icon" src="images/tw.png" {{action "twLogin" target="parentView"}}/>
+            <h5 class="or">or</h5>
+            <form class="form-horizontal">
+              <div class="signin-group control-group">
+                <label class="control-label"></label>
+                <div class="controls"><span class="help-inline">{{view.login.error}}</span></div>
+                <label class="control-label">Email</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span></div>{{view view.signInTextField valueBinding="view.login.username" placeholder="Enter your email address"}}
+                </div>
+              </div>
+              <div class="signin-group control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span></div>{{view view.signInTextField valueBinding="view.login.password" type="password" placeholder="Enter your password"}}
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <div class="row">
+                    <div class="span1"><a href="#" {{action "showRegister" target="parentView"}}>Register</a></div>
+                    <div class="span2"><a href="#" {{action "showForgotPassword" target="parentView"}}>Forgot password?</a></div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" {{action "cancelSignIn" target="parentView"}}>Cancel</button>
+            <button class="btn btn-primary" {{action "signIn" target="parentView"}}>Sign In</button>
+          </div>
+        </div>
+        <div id="register" data-backdrop="static" aria-hidden="true" class="modal fade">
+          <div class="modal-header"><button class="close" {{action "cancelRegister" target="parentView"}}>&times;</button>
+            <h3>Register</h3>
+          </div>
+          <div class="modal-body">
+            <img class="fb_icon" src="images/fb.png" {{action "fbLogin" target="parentView"}}/>
+            <img class="tw_icon" src="images/tw.png" {{action "twLogin" target="parentView"}}/>
+            <h5 class="or">or</h5>
+            <form class="form-horizontal">
+              <div class="register-group control-group">
+                <label class="control-label"></label>
+                <div class="controls"><span class="help-inline">{{view.register.error}}</span></div>
+                <label class="control-label">First</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"></span></div>{{view view.registerTextField  valueBinding="view.register.firstName" placeholder="Enter your first name" }}
+                </div>
+              </div>
+              <div class="register-group control-group">
+                <label class="control-label">Last</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"></span></div>{{view view.registerTextField valueBinding="view.register.lastName" placeholder="Enter your last name"}}
+                </div>
+              </div>
+              <div class="register-group control-group">
+                <label class="control-label">Email</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span></div>{{view view.registerTextField type="email" valueBinding="view.register.email" placeholder="Enter your email address"}}
+                </div>
+              </div>
+              <div class="register-group control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                  <div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span></div>{{view view.registerTextField type="password" valueBinding="view.register.password" placeholder="Enter your password"}}
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <div class="row">
+                    <div class="span3"><a href="#" {{action "showSignIn" target="parentView"}}>Sign In</a></div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" {{action "cancelRegister" target="parentView"}}>Cancel</button>
+            <button class="btn btn-primary" {{action "registerUser" target="parentView"}}>Register</button>
+          </div>
+        </div>
+      </div>
+    </script>
+    <script type="text/x-handlebars" data-template-name="home">
+      <div class="container">
+        <div class="row">
+          <div class="span8 offset2">
+            <h3>Neptune</h3>
+            <p>Welcome to the Neptune Project.  This project was put together to allow for a quick setup of an application using Node.js for the web server, Ember.js for the client-side MVC, and Parse for the API.</p>
+            <h4>Features</h4>
+            <h5>Node.js</h5>
+            <ul>
+              <li>MVC architecure web server using express</li>
+            </ul>
+            <h5>Ember.js</h5>
+            <ul>
+              <li>complete client side MVC architecture including
+                <ul>
+                  <li>Application Controller with Routing</li>
+                  <li>dataModels file for all data used in Ember</li>
+                  <li>dataSources file used for all API requests, in this case, it is used to talk to Parse and convert objects into Ember objects</li>
+                  <li>data-binding for viewing and editing data</li>
+                </ul>
+              </li>
+            </ul>
+            <h5>Parse.com</h5>
+            <ul>
+              <li> API and data store architecture
+                <ul>
+                  <li>system wide error logging hosted in the dataSources file, including cloud code to show hw to verify severity is either ERROR, WARNING or INFO</li>
+                  <li>account login, logout, register and updating</li>
+                  <li>ability to send emails using Mailgun</li>
+                  <li>ability to send sms using Twilio</li>
+                  <li>zero-configuration, no data model needs to be created, just get the app up and running, and you wil have you backend architecture created as you use it</li>
+                  <li>
+                    <div style="font-weight:bold;color:#3B5998;display:inline;">Facebook login</div>
+                  </li>
+                  <li>
+                    <div style="font-weight:bold;color:#4099FF;display:inline">Twitter login</div><i> (coming soon)</i>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <h5>Miscellaneous</h5>
+            <ul>
+              <li>Twitter Bootstrap for simple layout of the application</li>
+              <li>Jade Templating - jade is being used to serve up the html from Node to your browser</li>
+              <li>CoffeeScript - once you try it you will love it</li>
+              <li>Cloud Code - Parse cloud code enables a very easy way to not only have before and after triggers on collections, but also a way to quickly add an api endpoint</li>
+              <li>Handlebars.js - Ember uses this for all it's data-binding, it can get a little funky when combined with jade, but you get used to it</li>
+              <li>LESS - stylesheets compiled via LESS, though I do love SASS, LESS if what bootstrap uses, so I went with it for this</li>
+              <li>Twilio - twilio integration for SMS messaging</li>
+              <li>MailGun - mailgun integration for email messaging</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </script>
+    <script type="text/x-handlebars" data-template-name="email-messaging">
+      <div class="container">
+        <div class="row">
+          <div class="span6 offset2">
+            <div class="row">
+              <h3>Email Messaging</h3><button class="btn btn-primary" {{action "showSendMessage" target="parentView"}}>Send a New Email</button>
+            </div>
+            <div class="row">
+              <table class="table table-bordered">
+                <caption>Previous Messages</caption>
+                <thead>
+                  <tr>
+                    <th>To</th>
+                    <th>Subject</th>
+                    <th>Body</th>
+                  </tr>
+                </thead>
+                <tbody>{{#each item in view.content}}
+                  <tr>
+                    <td>{{item.toEmail}}</td>
+                    <td>{{item.subject}}</td>
+                    <td>{{item.body}}</td>
+                  </tr>{{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="sendEmailMessage" data-backdrop="static" aria-hidden="true" class="modal fade">
+        <div class="modal-header"><button class="close" {{action "cancelSendMessage" target="parentView"}}>&times;</button>
+          <h3>Send Email</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="register-group control-group">
+              <label class="control-label">To Email</label>
+              <div class="controls">
+                <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span></div>{{view Ember.TextField  valueBinding="view.emailMessage.toEmail" placeholder="Enter email address" }}
+              </div>
+            </div>
+            <div class="register-group control-group">
+              <label class="control-label">Subject</label>
+              <div class="controls">
+                <div class="input-prepend"><span class="add-on"></span></div>{{view Ember.TextField valueBinding="view.emailMessage.subject" placeholder="Enter subject"}}
+              </div>
+            </div>
+            <div class="register-group control-group">
+              <label class="control-label">Body</label>
+              <div class="controls">{{view Ember.TextArea valueBinding="view.emailMessage.body" placeholder="Enter Body"}}</div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" {{action "cancelSendMessage" target="parentView"}}>Cancel</button>
+          <button class="btn btn-primary" {{action "sendMessage" target="parentView"}}>Send</button>
+        </div>
+      </div>
+    </script>
+    <script type="text/x-handlebars" data-template-name="sms-messaging">
+      <div class="container">
+        <div class="row">
+          <div class="span6 offset2">
+            <div class="row">
+              <h3>SMS Messaging</h3><button class="btn btn-primary" {{action "showSendMessage" target="parentView"}}>Send a New SMS</button>
+            </div>
+            <div class="row">
+              <table class="table table-bordered">
+                <caption>Previous Messages</caption>
+                <thead>
+                  <tr>
+                    <th>To</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody>{{#each item in view.content}}
+                  <tr>
+                    <td>{{item.toPhoneNumber}}</td>
+                    <td>{{item.message}}</td>
+                  </tr>{{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="sendSmsMessage" data-backdrop="static" aria-hidden="true" class="modal fade">
+        <div class="modal-header"><button class="close" {{action "cancelSendMessage" target="parentView"}}>&times;</button>
+          <h3>Send SMS</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="control-group">
+              <label class="control-label">To Phone Number</label>
+              <div class="controls">
+                <div class="input-prepend"><span class="add-on"></span></div>{{view Ember.TextField  valueBinding="view.smsMessage.toPhoneNumber" placeholder="Enter phone number" }}
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Message</label>
+              <div class="controls">
+                <div class="input-prepend"><span class="add-on"></span></div>{{view Ember.TextField valueBinding="view.smsMessage.message" placeholder="Enter message"}}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" {{action "cancelSendMessage" target="parentView"}}>Cancel</button>
+          <button class="btn btn-primary" {{action "sendMessage" target="parentView"}}>Send</button>
+        </div>
+      </div>
+    </script>
+    <script type="text/x-handlebars" data-template-name="my-profile">
+      <div class="container">
+        <div class="row">
+          <div class="span6 offset2">
+            <h3>My Profile</h3>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>User Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{view.user.userName}}</td>
+                  <td>{{view.user.firstName}}</td>
+                  <td>{{view.user.lastName}}</td>
+                  <td><a {{action showEdit target="parentView"}} href="#">Edit</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="editUser" data-backdrop="static" aria-hidden="true" class="modal fade">
+        <div class="modal-header"><button class="close" {{action "cancelEdit" target="parentView"}}>&times;</button>
+          <h3>Edit My Profile</h3>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="register-group control-group">
+              <label class="control-label">First</label>
+              <div class="controls">
+                <div class="input-prepend"><span class="add-on"></span></div>{{view view.updateTextField  valueBinding="view.editUser.firstName" placeholder="Enter your first name" }}
+              </div>
+            </div>
+            <div class="register-group control-group">
+              <label class="control-label">Last</label>
+              <div class="controls">
+                <div class="input-prepend"><span class="add-on"></span></div>{{view view.updateTextField valueBinding="view.editUser.lastName" placeholder="Enter your last name"}}
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" {{action "cancelEdit" target="parentView"}}>Cancel</button>
+          <button class="btn btn-primary" {{action "updateUser" target="parentView"}}>Save</button>
+        </div>
+      </div>
+    </script>
+    <script type="text/x-handlebars" data-template-name="home">
+      <div class="container">
+        <div class="row">
+          <div class="span8 offset2">
+            <h3>Neptune</h3>
+            <p>Welcome to the Neptune Project.  This project was put together to allow for a quick setup of an application using Node.js for the web server, Ember.js for the client-side MVC, and Parse for the API.</p>
+            <h4>Features</h4>
+            <h5>Node.js</h5>
+            <ul>
+              <li>MVC architecure web server using express</li>
+            </ul>
+            <h5>Ember.js</h5>
+            <ul>
+              <li>complete client side MVC architecture including
+                <ul>
+                  <li>Application Controller with Routing</li>
+                  <li>dataModels file for all data used in Ember</li>
+                  <li>dataSources file used for all API requests, in this case, it is used to talk to Parse and convert objects into Ember objects</li>
+                  <li>data-binding for viewing and editing data</li>
+                </ul>
+              </li>
+            </ul>
+            <h5>Parse.com</h5>
+            <ul>
+              <li> API and data store architecture
+                <ul>
+                  <li>system wide error logging hosted in the dataSources file, including cloud code to show hw to verify severity is either ERROR, WARNING or INFO</li>
+                  <li>account login, logout, register and updating</li>
+                  <li>ability to send emails using Mailgun</li>
+                  <li>ability to send sms using Twilio</li>
+                  <li>zero-configuration, no data model needs to be created, just get the app up and running, and you wil have you backend architecture created as you use it</li>
+                  <li>
+                    <div style="font-weight:bold;color:#3B5998;display:inline;">Facebook login</div>
+                  </li>
+                  <li>
+                    <div style="font-weight:bold;color:#4099FF;display:inline">Twitter login</div><i> (coming soon)</i>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <h5>Miscellaneous</h5>
+            <ul>
+              <li>Twitter Bootstrap for simple layout of the application</li>
+              <li>Jade Templating - jade is being used to serve up the html from Node to your browser</li>
+              <li>CoffeeScript - once you try it you will love it</li>
+              <li>Cloud Code - Parse cloud code enables a very easy way to not only have before and after triggers on collections, but also a way to quickly add an api endpoint</li>
+              <li>Handlebars.js - Ember uses this for all it's data-binding, it can get a little funky when combined with jade, but you get used to it</li>
+              <li>LESS - stylesheets compiled via LESS, though I do love SASS, LESS if what bootstrap uses, so I went with it for this</li>
+              <li>Twilio - twilio integration for SMS messaging</li>
+              <li>MailGun - mailgun integration for email messaging</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </script>
+    <!-- library scripts-->
+    <script src="/javascripts/libs/jquery-1.7.2.min.js"></script>
+    <script src="/javascripts/libs/bootstrap.js"></script>
+    <script src="/javascripts/libs/handlebars-1.0.0.beta.6.js"></script>
+    <script src="/javascripts/libs/ember-1.0.0-pre.2.js"></script>
+    <script src="/javascripts/libs/parse-1.2.8.min.js"></script>
+    <!-- ember application-->
+    <script src="/javascripts/app.js"></script>
+    <!-- ember models-->
+    <script src="/javascripts/dataModels.js"></script>
+    <!-- ember data sources-->
+    <script src="/javascripts/dataSources.js"></script>
+    <!-- ember views-->
+    <script src="/javascripts/views.js"></script>
+    <!-- ember controllers-->
+    <script src="/javascripts/accountController.js"></script>
+    <script src="/javascripts/emailMessagingController.js"></script>
+    <script src="/javascripts/smsMessagingController.js"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "applications": {
+    "_default": {
+      "link": "neptune"
+    },
+    "neptune": {
+      "applicationId": "jRt3oPjIvmawp4zdZdFXgH93X9Rir9CT3wPaJhkK",
+      "masterKey": "cnCkszHhrF0xrqL20SGj6PqppcP9CjtplHw2dEER"
+    }
+  },
+  "global": {
+    "parseVersion": "1.2.8"
+  }
+}
